@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy PuzzleScript to Gist
 on:
   push:
     paths:

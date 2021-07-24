@@ -1,7 +1,16 @@
-- uses: actions/checkout@v2
-- name: Deploy
-  uses: exuanbo/actions-deploy-gist@v1
-  with:
-    token: ${{ secrets.TOKEN }}
-    gist_id: 9044a8b4cf78d6ebd16020bbc1dadb25
-    file_path: script.txt
+name: Doply
+on:
+  push:
+    paths:
+      - 'script.txt'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        gist_id: 9044a8b4cf78d6ebd16020bbc1dadb25
+        file_path: script.txt

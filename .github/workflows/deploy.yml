@@ -1,4 +1,4 @@
-name: Doply
+name: Deploy
 on:
   push:
     paths:

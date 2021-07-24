@@ -305,6 +305,12 @@ T = Target
 SOUNDS
 =======
 
+sfx0 10642907 (Walk)
+sfx1 34312104 (Fall down laundry chute)
+sfx2 75577307 (Push object)
+sfx3 64791900 (Collect target)
+sfx4 25239706 (Switch player)
+
 ================
 COLLISIONLAYERS
 ================
@@ -348,8 +354,8 @@ left [ MoveLeft ] -> [ > MoveLeft ]
 right [ MoveRight ] -> [ > MoveRight ]
 
 (PLAYER SWITCHING)
-[ action PlayerA ] [ TrackerA ] [ PlayerBInactive ] [ TrackerBInactive ] -> [ PlayerAInactive ] [ TrackerAInactive ] [ PlayerB ] [ TrackerB ]
-[ action PlayerB ] [ TrackerB ] [ PlayerAInactive ] [ TrackerAInactive ] -> [ PlayerBInactive ] [ TrackerBInactive ] [ PlayerA ] [ TrackerA ]
+[ action PlayerA ] [ TrackerA ] [ PlayerBInactive ] [ TrackerBInactive ] -> [ PlayerAInactive ] [ TrackerAInactive ] [ PlayerB ] [ TrackerB ] sfx4
+[ action PlayerB ] [ TrackerB ] [ PlayerAInactive ] [ TrackerAInactive ] -> [ PlayerBInactive ] [ TrackerBInactive ] [ PlayerA ] [ TrackerA ] sfx4
 
 (MOVEMENT LOOP)
 (In PuzzleScript, movement attempts are not guaranteed to be successful.
@@ -381,14 +387,14 @@ startloop
   object is attempting to move but is unable to. See
   https://groups.google.com/g/puzzlescript/c/rJr6-lyDfhM)
 
-  [ > Moveable | Moveable ] -> [ > Moveable | > Moveable ]
+  [ > Moveable | Moveable ] -> [ > Moveable | > Moveable ] sfx2
   [ > Moveable | Obstacle ] -> [ > Moveable CancelMarker | Obstacle ]
   [ > Moveable | > Moveable CancelMarker] -> [ > Moveable CancelMarker | > Moveable CancelMarker ]
   [ > Moveable CancelMarker ] -> [ Moveable CancelMarker ]
 
   (TRACKER MOVEMENT)
-  [ > PlayerA ] [ TrackerA ] -> [ > PlayerA ] [ > TrackerA ]
-  [ > PlayerB ] [ TrackerB ] -> [ > PlayerB ] [ > TrackerB ]
+  [ > PlayerA ] [ TrackerA ] -> [ > PlayerA ] [ > TrackerA ] sfx0
+  [ > PlayerB ] [ TrackerB ] -> [ > PlayerB ] [ > TrackerB ] sfx0
   [ > PlayerAInactive ] [ TrackerA ] -> [ > PlayerAInactive ] [ > TrackerA ]
   [ > PlayerBInactive ] [ TrackerB ] -> [ > PlayerBInactive ] [ > TrackerB ]
   [ > Magnet ] [ MagnetTracker ] -> [ > Magnet ] [ > MagnetTracker ]
@@ -409,10 +415,10 @@ endloop
 
 (LAUNDRY CHUTE)
 late [ Moveable LaundryChute ] [ Moveable LaundryChuteTracker ] -> [ LaundryChute ] [ LaundryChuteTracker ]
-late [ Moveable LaundryChute ] [ LaundryChuteTracker ] -> [ LaundryChute ] [ Moveable LaundryChuteTracker ]
+late [ Moveable LaundryChute ] [ LaundryChuteTracker ] -> [ LaundryChute ] [ Moveable LaundryChuteTracker ] sfx1
 
 (WIN CONDITION)
-late [ Player Target ] -> win
+late [ Player Target ] -> win sfx3
 
 ==============
 WINCONDITIONS

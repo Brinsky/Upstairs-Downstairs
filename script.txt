@@ -310,6 +310,7 @@ sfx1 34312104 (Fall down laundry chute)
 sfx2 75577307 (Push object)
 sfx3 64791900 (Collect target)
 sfx4 25239706 (Switch player)
+sfx5 40120502 (Falling object collision)
 
 ================
 COLLISIONLAYERS
@@ -414,7 +415,7 @@ endloop
 
 
 (LAUNDRY CHUTE)
-late [ Moveable LaundryChute ] [ Moveable LaundryChuteTracker ] -> [ LaundryChute ] [ LaundryChuteTracker ]
+late [ Moveable LaundryChute ] [ Moveable LaundryChuteTracker ] -> [ LaundryChute ] [ LaundryChuteTracker ] sfx5
 late [ Moveable LaundryChute ] [ LaundryChuteTracker ] -> [ LaundryChute ] [ Moveable LaundryChuteTracker ] sfx1
 
 (WIN CONDITION)

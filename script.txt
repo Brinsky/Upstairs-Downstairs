@@ -1,0 +1,447 @@
+title Upstairs / Downstairs
+author Brian Stottler       ■
+homepage github.com/Brinsky/Upstairs-Downstairs
+
+(For intro animations)
+realtime_interval 0.2
+
+========
+OBJECTS
+========
+
+Void
+black
+
+Floor
+#8b9b7d
+
+Wall
+brown darkbrown
+00010
+11111
+01000
+11111
+00010
+
+PlayerA
+blue darkblue
+..0..
+00000
+.000.
+.111.
+.0.0.
+
+PlayerB
+orange brown
+..0..
+00000
+.000.
+.111.
+.0.0.
+
+
+PlayerAInactive
+lightblue blue
+..0..
+00000
+.000.
+.111.
+.0.0.
+
+PlayerBInactive
+#fed8b1 orange
+..0..
+00000
+.000.
+.111.
+.0.0.
+
+TrackerA
+blue
+.....
+..0..
+.0.0.
+..0..
+.....
+
+TrackerB
+orange
+.....
+..0..
+.0.0.
+..0..
+.....
+
+TrackerAInactive
+lightblue
+.....
+..0..
+.0.0.
+..0..
+.....
+
+TrackerBInactive
+#fed8b1
+.....
+..0..
+.0.0.
+..0..
+.....
+
+Magnet
+red white
+.....
+.1.1.
+.0.0.
+.0.0.
+.000.
+
+MagnetTracker
+transparent
+(red
+.....
+..0..
+.0.0.
+..0..
+.....)
+
+LaundryChute
+darkbrown black
+00000
+01110
+01110
+01110
+00000
+
+LaundryChuteTracker
+transparent
+
+Crate
+lightbrown brown
+00000
+01110
+01110
+01110
+00000
+
+MetalCrate
+darkgray lightgray white
+00000
+01120
+01120
+01110
+00000
+
+(Should never be visible)
+CancelMarker
+red
+
+(Should never be visible)
+CrushedTracker
+red
+
+Text0
+white black
+11111
+00011
+01101
+01101
+00011
+
+Text1
+white black
+11111
+10011
+01101
+01101
+10011
+
+Text2
+white black
+11111
+01110
+01010
+01010
+10101
+
+Text3
+white black
+11111
+10110
+10010
+10100
+10110
+
+Text4
+white black
+11111
+01101
+01101
+01101
+10011
+
+Text5
+white black
+11111
+00011
+01101
+00011
+01111
+
+Target
+#D4AF37 yellow white
+.....
+..1..
+.012.
+.012.
+.....
+
+MoveLeft
+blue darkblue
+11111
+10001
+10001
+10001
+11111
+
+MoveLeftPaused
+blue darkblue
+11111
+10001
+10001
+10001
+11111
+
+MoveLeftPausedTemp
+blue darkblue
+11111
+10001
+10001
+10001
+11111
+
+MoveRight
+orange brown
+11111
+10001
+10001
+10001
+11111
+
+MoveRightPaused
+orange brown
+11111
+10001
+10001
+10001
+11111
+
+
+MoveRightPausedTemp
+orange brown
+11111
+10001
+10001
+10001
+11111
+
+=======
+LEGEND
+=======
+
+(GROUPINGS)
+
+Background = Void or Floor
+Text = Text0 or Text1 or Text2 or Text3 or Text4 or Text5
+MoveBlocks = MoveLeft or MoveLeftPaused or MoveLeftPausedTemp or MoveRight or MoveRightPaused or MoveRightPausedTemp
+
+Player = PlayerA or PlayerB
+InactivePlayer = PlayerAInactive or PlayerBInactive
+
+Obstacle = Wall
+Moveable = Player or InactivePlayer or Magnet or Crate or MetalCrate
+Tracker = TrackerA or TrackerB or MagnetTracker
+
+(SHORTHAND)
+
+% = MoveLeftPaused and MoveRight
+
+_ = Void
+. = Floor
+
+# = Wall
+C = Crate
+ℭ = MetalCrate
+
+A = PlayerA
+B = PlayerB
+
+α = PlayerAInactive
+β = PlayerBInactive
+
+ᴬ = TrackerA
+ᴮ = TrackerB
+
+ᵅ = TrackerAInactive
+ᵝ = TrackerBInactive
+
+M = Magnet
+ᴹ = MagnetTracker
+ṁ = Magnet and MagnetTracker
+
+O = LaundryChute
+X = LaundryChuteTracker
+
+T = Target
+
+0 = Text0
+1 = Text1
+2 = Text2
+3 = Text3
+4 = Text4
+5 = Text5
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+
+(BACKGROUND / STATIC TRIGGERS)
+Background
+Text
+LaundryChute
+Target
+MoveLeft, MoveLeftPaused, MoveLeftPausedTemp
+MoveRight, MoveRightPaused, MoveRightPausedTemp
+
+(MOVEABLES AND OBSTACLES)
+Player, InactivePlayer, Wall, Magnet, Crate, MetalCrate
+
+(MOBILE TRACKERS)
+MagnetTracker
+TrackerA, TrackerB, TrackerAInactive, TrackerBInactive (Should never collide)
+
+(STATIC TRACKERS)
+LaundryChuteTracker 
+CancelMarker
+CrushedTracker
+
+======
+RULES     
+======
+
+(INTRO ANIMATIONS)
+[ MoveLeft | no MoveBlocks | MoveRightPaused ] -> win
+
+(Used to alternate between MoveX and MoveXPaused every other turn)
+[ MoveLeft ] -> [ MoveLeftPausedTemp ]
+[ MoveLeftPaused ] -> [ MoveLeft ]
+[ MoveLeftPausedTemp ] -> [ MoveLeftPaused ]
+[ MoveRight ] -> [ MoveRightPausedTemp ]
+[ MoveRightPaused ] -> [ MoveRight ]
+[ MoveRightPausedTemp ] ->[ MoveRightPaused ]
+
+left [ MoveLeft ] -> [ > MoveLeft ]
+right [ MoveRight ] -> [ > MoveRight ]
+
+(PLAYER SWITCHING)
+[ action PlayerA ] [ TrackerA ] [ PlayerBInactive ] [ TrackerBInactive ] -> [ PlayerAInactive ] [ TrackerAInactive ] [ PlayerB ] [ TrackerB ]
+[ action PlayerB ] [ TrackerB ] [ PlayerAInactive ] [ TrackerAInactive ] -> [ PlayerBInactive ] [ TrackerBInactive ] [ PlayerA ] [ TrackerA ]
+
+(MOVEMENT LOOP)
+(In PuzzleScript, movement attempts are not guaranteed to be successful.
+Movement testing is needed to ensure that trackers will attempt to move
+only when their tracked object is *successfully* attempting. Because a
+tracker might propagate attempted movement to another object, which in 
+turn could have its own tracker, a loop of the following form is needed:
+
+  - Movement test: Propagate existing movement attempts and cancel them
+    if obstacles are encountered
+  - Tracker movement: Copy non-canceled movement from tracked objects
+    onto their trackers
+  - Tracker-caused movement: Copy movement from trackers to any objects
+    influenced by those trackers (e.g. from the magnet tracker to the
+    metal crate)
+    
+If these steps are not run in a loop, an object receiving attempted
+movement would (a) never have a chance to propagate that movement to its
+own tracker and (b) would not be tested for successful movement before
+doing so.)
+startloop
+
+  (MOVEMENT TEST)
+  (This phase propagates attempted movement through moveable objects
+  (e.g. a line of crates being pushed by the player) and determines
+  whether the objects are actually able to move (as opposed to blocked
+  by a wall). If not, movement is cancelled for the relevant objects.
+  This is needed to prevent trackers from moving when the tracked
+  object is attempting to move but is unable to. See
+  https://groups.google.com/g/puzzlescript/c/rJr6-lyDfhM)
+
+  [ > Moveable | Moveable ] -> [ > Moveable | > Moveable ]
+  [ > Moveable | Obstacle ] -> [ > Moveable CancelMarker | Obstacle ]
+  [ > Moveable | > Moveable CancelMarker] -> [ > Moveable CancelMarker | > Moveable CancelMarker ]
+  [ > Moveable CancelMarker ] -> [ Moveable CancelMarker ]
+
+  (TRACKER MOVEMENT)
+  [ > PlayerA ] [ TrackerA ] -> [ > PlayerA ] [ > TrackerA ]
+  [ > PlayerB ] [ TrackerB ] -> [ > PlayerB ] [ > TrackerB ]
+  [ > PlayerAInactive ] [ TrackerA ] -> [ > PlayerAInactive ] [ > TrackerA ]
+  [ > PlayerBInactive ] [ TrackerB ] -> [ > PlayerBInactive ] [ > TrackerB ]
+  [ > Magnet ] [ MagnetTracker ] -> [ > Magnet ] [ > MagnetTracker ]
+
+  (TRACKER-CAUSED MOVEMENT)
+  (Any tracker-caused movement should check for CancelMarkers to avoid
+  infinite loops (because tracker movement attempts are not cleared
+  anywhere in the loop))
+  [ > MagnetTracker MetalCrate no CancelMarker ] -> [ > MagnetTracker > MetalCrate ]
+
+endloop
+
+[ CancelMarker ] -> []
+
+
+(############ LATE RULES ############)
+
+
+(LAUNDRY CHUTE)
+late [ Moveable LaundryChute ] [ Moveable LaundryChuteTracker ] -> [ LaundryChute ] [ LaundryChuteTracker ]
+late [ Moveable LaundryChute ] [ LaundryChuteTracker ] -> [ LaundryChute ] [ Moveable LaundryChuteTracker ]
+
+(WIN CONDITION)
+late [ Player Target ] -> win
+
+==============
+WINCONDITIONS
+==============
+
+=======     
+LEVELS
+=======
+
+(Intro)
+_________________
+_____%%%%%%%%____
+_____%%%%%%%%____
+_____%%%%%%%%____
+_____%%%%%%%%____
+_____%%%%%%%%____
+_____%%%%%%%%____
+_____%%%%%%%%____
+_____%%%%%%%%____
+
+(Magnetics)
+0123_____45______
+########_########
+#......#_#......#
+#.X..ᵝ.#_#.O..β.#
+#.A....#_#.ᴬ....#
+#......#_#...#C##
+#......#_#.ṁ.#ℭ.#
+#......#_#...#CT#
+########_########
+
+message You win!

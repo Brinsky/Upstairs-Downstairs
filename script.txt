@@ -97,13 +97,12 @@ red white
 .000.
 
 MagnetTracker
-transparent
-(red
+red
 .....
 ..0..
 .0.0.
 ..0..
-.....)
+.....
 
 LaundryChute
 darkbrown black
@@ -260,6 +259,7 @@ InactivePlayer = PlayerAInactive or PlayerBInactive
 
 Obstacle = Wall
 Moveable = Player or InactivePlayer or Magnet or Crate or MetalCrate
+MoveableUntracked = Crate or MetalCrate
 Tracker = TrackerA or TrackerB or MagnetTracker
 
 (SHORTHAND)
@@ -287,7 +287,6 @@ B = PlayerB
 
 M = Magnet
 ᴹ = MagnetTracker
-ṁ = Magnet and MagnetTracker
 
 O = LaundryChute
 X = LaundryChuteTracker
@@ -329,7 +328,8 @@ Player, InactivePlayer, Wall, Magnet, Crate, MetalCrate
 
 (MOBILE TRACKERS)
 MagnetTracker
-TrackerA, TrackerB, TrackerAInactive, TrackerBInactive (Should never collide)
+TrackerA, TrackerAInactive
+TrackerB, TrackerBInactive
 
 (STATIC TRACKERS)
 LaundryChuteTracker 
@@ -415,8 +415,17 @@ endloop
 
 
 (LAUNDRY CHUTE)
+(Crush)
 late [ Moveable LaundryChute ] [ Moveable LaundryChuteTracker ] -> [ LaundryChute ] [ LaundryChuteTracker ] sfx5
-late [ Moveable LaundryChute ] [ LaundryChuteTracker ] -> [ LaundryChute ] [ Moveable LaundryChuteTracker ] sfx1
+(TODO: clean up trackers if a tracked object is crushed)
+(Fall: tracked objects)
+late [ PlayerA LaundryChute ] [ TrackerA LaundryChuteTracker ] -> [ TrackerA LaundryChute ] [ PlayerA LaundryChuteTracker ] sfx1
+late [ PlayerB LaundryChute ] [ TrackerB LaundryChuteTracker ] -> [ TrackerB LaundryChute ] [ PlayerB LaundryChuteTracker ] sfx1
+late [ PlayerAInactive LaundryChute ] [ TrackerAInactive LaundryChuteTracker ] -> [ TrackerAInactive LaundryChute ] [ PlayerAInactive LaundryChuteTracker ] sfx1
+late [ PlayerBInactive LaundryChute ] [ TrackerBInactive LaundryChuteTracker ] -> [ TrackerBInactive LaundryChute ] [ PlayerBInactive LaundryChuteTracker ] sfx1
+late [ Magnet LaundryChute ] [ MagnetTracker LaundryChuteTracker ] -> [ MagnetTracker LaundryChute ] [ Magnet LaundryChuteTracker ] sfx1
+(Fall: untracked objects)
+late [ MoveableUntracked LaundryChute ] [ LaundryChuteTracker ] -> [ LaundryChute ] [ MoveableUntracked LaundryChuteTracker ] sfx1
 
 (WIN CONDITION)
 late [ Player Target ] -> win sfx3
@@ -447,7 +456,7 @@ _____%%%%%%%%____
 #.X..ᵝ.#_#.O..β.#
 #.A....#_#.ᴬ....#
 #......#_#...#C##
-#......#_#.ṁ.#ℭ.#
+#.ᴹ....#_#.M.#ℭ.#
 #......#_#...#CT#
 ########_########
 

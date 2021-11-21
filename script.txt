@@ -396,8 +396,8 @@ startloop
   (TRACKER MOVEMENT)
   [ > PlayerA ] [ TrackerA ] -> [ > PlayerA ] [ > TrackerA ] sfx0
   [ > PlayerB ] [ TrackerB ] -> [ > PlayerB ] [ > TrackerB ] sfx0
-  [ > PlayerAInactive ] [ TrackerA ] -> [ > PlayerAInactive ] [ > TrackerA ]
-  [ > PlayerBInactive ] [ TrackerB ] -> [ > PlayerBInactive ] [ > TrackerB ]
+  [ > PlayerAInactive ] [ TrackerAInactive ] -> [ > PlayerAInactive ] [ > TrackerAInactive ]
+  [ > PlayerBInactive ] [ TrackerBInactive ] -> [ > PlayerBInactive ] [ > TrackerBInactive ]
   [ > Magnet ] [ MagnetTracker ] -> [ > Magnet ] [ > MagnetTracker ]
 
   (TRACKER-CAUSED MOVEMENT)
